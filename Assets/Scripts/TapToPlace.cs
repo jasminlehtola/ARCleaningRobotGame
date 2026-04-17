@@ -1,12 +1,12 @@
 using UnityEngine;
 using UnityEngine.XR.ARFoundation;
 using UnityEngine.XR.ARSubsystems;
+using UnityEngine.InputSystem;
 using System.Collections.Generic;
 
 public class TapToPlace : MonoBehaviour
 {
     public GameObject objectPrefab;
-
     private ARRaycastManager raycastManager;
     private List<ARRaycastHit> hits = new List<ARRaycastHit>();
 
@@ -17,19 +17,28 @@ public class TapToPlace : MonoBehaviour
 
     void Update()
     {
-        if (Input.touchCount == 0)
+        Debug.Log("Update running");
+
+        if (Touchscreen.current == null)
             return;
 
-        Touch touch = Input.GetTouch(0);
+        var touch = Touchscreen.current.primaryTouch;
 
-        if (touch.phase != TouchPhase.Began)
-            return;
+        if (touch.press.wasPressedThisFrame)
+        {
+            TryPlace(touch.position.ReadValue());
+        }
+    }
 
-        if (raycastManager.Raycast(touch.position, hits, TrackableType.PlaneWithinPolygon))
+    void TryPlace(Vector2 screenPos)
+    {
+        Debug.Log("Tapped!");
+
+        if (raycastManager.Raycast(screenPos, hits, TrackableType.PlaneWithinPolygon))
         {
             Pose hitPose = hits[0].pose;
-
             Instantiate(objectPrefab, hitPose.position, hitPose.rotation);
+            Debug.Log("Placed object!");
         }
     }
 }
