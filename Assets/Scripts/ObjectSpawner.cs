@@ -44,6 +44,10 @@ public class ObjectSpawner : MonoBehaviour
     // Tries to spawn an object at a random screen position on a plane
     void TrySpawn()
     {
+        // Stop spawning objects if the game time has run out
+        if (GameManager.Instance != null && GameManager.Instance.GetTime() <= 0f)
+            return;
+
         Vector2 randomScreenPos = new Vector2(
             Random.Range(0, Screen.width),
             Random.Range(0, Screen.height)

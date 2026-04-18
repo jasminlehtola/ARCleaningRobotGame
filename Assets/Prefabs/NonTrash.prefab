@@ -125,7 +125,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2c8b1428d4c06b44a9b5955e75270c4f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Collectable
-  scoreValue: 2
+  scoreValue: -2
   isBadObject: 0
   collectDistance: 0.7
   suctionSpeed: 2

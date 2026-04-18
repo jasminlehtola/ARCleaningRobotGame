@@ -55,14 +55,9 @@ public class Collectable : MonoBehaviour
     // Collection of the object, updating the score and destroying the object
     public void Collect()
     {
-        if (isBadObject)
-        {
-            GameManager.Instance.AddScore(-scoreValue);
-        }
-        else
-        {
-            GameManager.Instance.AddScore(scoreValue);
-        }
+        
+        GameManager.Instance.AddScore(scoreValue);
+        
         if (spawner != null)
         {
             spawner.RemoveObject(gameObject);
