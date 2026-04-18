@@ -1,3 +1,4 @@
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class Collectable : MonoBehaviour
@@ -5,7 +6,7 @@ public class Collectable : MonoBehaviour
     public int scoreValue = 1;
     public bool isBadObject = false;
 
-    public float collectDistance = 0.5f;
+    public float collectDistance = 0.8f;
     public float suctionSpeed = 2f;
 
     private Transform playerCamera;
@@ -13,10 +14,14 @@ public class Collectable : MonoBehaviour
 
     private ObjectSpawner spawner;
 
+    private float spawnTime;
+    public float collectDelay = 1f;
+
     void Start()
     {
         playerCamera = Camera.main.transform;
         spawner = FindFirstObjectByType<ObjectSpawner>();
+        spawnTime = Time.time;
     }
 
     // Checks the distance to the player camera and moves towards it if within collectDistance
@@ -55,13 +60,17 @@ public class Collectable : MonoBehaviour
     // Collection of the object, updating the score and destroying the object
     public void Collect()
     {
-        
+        Debug.Log("Collected: " + gameObject.name + " | value: " + scoreValue);
+
         GameManager.Instance.AddScore(scoreValue);
         
         if (spawner != null)
         {
             spawner.RemoveObject(gameObject);
         }
+
+        float distance = Vector3.Distance(transform.position, playerCamera.position);
+        Debug.Log("Collected at distance: " + distance);
 
         Destroy(gameObject);
     }

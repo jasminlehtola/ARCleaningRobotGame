@@ -9,15 +9,20 @@ public class ObjectSpawner : MonoBehaviour
     public GameObject[] badPrefabs;
 
     [Range(0f, 1f)]
-    public float badChance = 0.2f;
+    public float badChance = 0.3f;
 
     public int maxObjects = 10;
-    public float spawnInterval = 2f;
+    public float spawnInterval = 1f;
+    public float minSpawnDistance = 2f;
 
     private ARRaycastManager raycastManager;
     private Camera arCamera;
+    private ARPlaneManager planeManager;
+
+    private bool initialSpawnDone = false;
 
     private float timer = 0f;
+
 
     private List<GameObject> spawnedObjects = new List<GameObject>();
     static List<ARRaycastHit> hits = new List<ARRaycastHit>();
@@ -26,12 +31,21 @@ public class ObjectSpawner : MonoBehaviour
     void Start()
     {
         raycastManager = GetComponent<ARRaycastManager>();
+        planeManager = GetComponent<ARPlaneManager>();
         arCamera = Camera.main;
     }
 
     // Spawns objects at regular intervals if the max number of objects has not been reached
     void Update()
     {
+        // First spawn the objects instantly
+        if (!initialSpawnDone)
+        {
+            InitialSpawn();
+            return;
+        }
+
+        // Normal spawning over time after collecting
         timer += Time.deltaTime;
 
         if (timer >= spawnInterval && spawnedObjects.Count < maxObjects)
@@ -41,21 +55,57 @@ public class ObjectSpawner : MonoBehaviour
         }
     }
 
+    // Spawns objects instantly at the start of the game
+    void InitialSpawn()
+    {
+        int target = maxObjects / 2;
+        int attempts = 0;
+        int maxAttempts = maxObjects * 10;
+
+        while (spawnedObjects.Count < target && attempts < maxAttempts)
+        {
+            TrySpawn();
+            attempts++;
+        }
+
+        initialSpawnDone = true;
+        
+        
+    }
+
     // Tries to spawn an object at a random screen position on a plane
     void TrySpawn()
     {
-        // Stop spawning objects if the game time has run out
+        // Stop spawning if game is over
         if (GameManager.Instance != null && GameManager.Instance.GetTime() <= 0f)
             return;
 
+        // Don't spawn until planes exist
+        //if (planeManager.trackables.count == 0)
+        //return;
+
+
+        float x = Random.Range(0.2f, 0.8f);
+        float y = Random.Range(0.2f, 0.8f);
+
         Vector2 randomScreenPos = new Vector2(
-            Random.Range(0, Screen.width),
-            Random.Range(0, Screen.height)
+            x * Screen.width,
+            y * Screen.height
         );
+
 
         if (raycastManager.Raycast(randomScreenPos, hits, TrackableType.PlaneWithinPolygon))
         {
             Pose pose = hits[0].pose;
+
+            // Check the distance to avoid spawning objects too close to the player
+            Vector3 cameraPos = arCamera.transform.position;
+
+            if (Vector3.Distance(pose.position, cameraPos) < minSpawnDistance)
+            {
+                return; // too close skip spawn
+            }
+
 
             GameObject prefabToSpawn = ChoosePrefab();
 
@@ -66,6 +116,7 @@ public class ObjectSpawner : MonoBehaviour
             );
 
             spawnedObjects.Add(obj);
+            Debug.Log("Spawned at distance: " + Vector3.Distance(pose.position, cameraPos));
         }
     }
 
