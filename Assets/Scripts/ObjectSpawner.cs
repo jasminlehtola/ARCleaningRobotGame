@@ -68,9 +68,12 @@ public class ObjectSpawner : MonoBehaviour
             attempts++;
         }
 
-        initialSpawnDone = true;
-        
-        
+        if (spawnedObjects.Count >= target)
+        {
+            initialSpawnDone = true;
+        }
+
+
     }
 
     // Tries to spawn an object at a random screen position on a plane
@@ -85,38 +88,47 @@ public class ObjectSpawner : MonoBehaviour
         //return;
 
 
-        float x = Random.Range(0.2f, 0.8f);
-        float y = Random.Range(0.2f, 0.8f);
-
-        Vector2 randomScreenPos = new Vector2(
-            x * Screen.width,
-            y * Screen.height
-        );
-
-
-        if (raycastManager.Raycast(randomScreenPos, hits, TrackableType.PlaneWithinPolygon))
+        for (int i = 0; i < 5; i++)
         {
-            Pose pose = hits[0].pose;
+            float x = Random.Range(0.2f, 0.8f);
+            float y = Random.Range(0.2f, 0.8f);
 
-            // Check the distance to avoid spawning objects too close to the player
-            Vector3 cameraPos = arCamera.transform.position;
-
-            if (Vector3.Distance(pose.position, cameraPos) < minSpawnDistance)
-            {
-                return; // too close skip spawn
-            }
-
-
-            GameObject prefabToSpawn = ChoosePrefab();
-
-            GameObject obj = Instantiate(
-                prefabToSpawn,
-                pose.position + Vector3.up * 0.05f,
-                Quaternion.identity
+            Vector2 randomScreenPos = new Vector2(
+                x * Screen.width,
+                y * Screen.height
             );
 
-            spawnedObjects.Add(obj);
-            Debug.Log("Spawned at distance: " + Vector3.Distance(pose.position, cameraPos));
+
+            if (raycastManager.Raycast(randomScreenPos, hits, TrackableType.PlaneWithinPolygon))
+            {
+                Pose pose = hits[0].pose;
+
+                // Check the distance to avoid spawning objects too close to the player or each other
+                Vector3 cameraPos = arCamera.transform.position;
+
+                if (Vector3.Distance(pose.position, cameraPos) < minSpawnDistance)
+                {
+                    continue; // too close skip spawn
+                }
+
+                if (IsTooCloseToOthers(pose.position))
+                {
+                    continue; // too close to other objects, skip spawn
+                }
+
+
+                GameObject prefabToSpawn = ChoosePrefab();
+
+                GameObject obj = Instantiate(
+                    prefabToSpawn,
+                    pose.position + Vector3.up * 0.05f,
+                    Quaternion.identity
+                );
+
+                spawnedObjects.Add(obj);
+                Debug.Log("Spawned at distance: " + Vector3.Distance(pose.position, cameraPos));
+                return;
+            }
         }
     }
 
@@ -137,5 +149,18 @@ public class ObjectSpawner : MonoBehaviour
     public void RemoveObject(GameObject obj)
     {
         spawnedObjects.Remove(obj);
+    }
+
+    // Checks if the given position is too close to other spawned objects
+    bool IsTooCloseToOthers(Vector3 position)
+    {
+        foreach (var obj in spawnedObjects)
+        {
+            if (Vector3.Distance(position, obj.transform.position) < 0.8f)
+            {
+                return true;
+            }
+        }
+        return false;
     }
 }
