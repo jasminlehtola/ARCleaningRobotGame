@@ -4,7 +4,6 @@ using UnityEngine;
 public class Collectable : MonoBehaviour
 {
     public int scoreValue = 1;
-    public bool isBadObject = false;
 
     public float collectDistance = 0.8f;
     public float suctionSpeed = 2f;
@@ -24,7 +23,7 @@ public class Collectable : MonoBehaviour
         spawnTime = Time.time;
     }
 
-    // Checks the distance to the player camera and moves towards it if within collectDistance
+    // Checks the distance to the player camera and starts collecting if within range
     void Update()
     {
         float distance = Vector3.Distance(transform.position, playerCamera.position);
