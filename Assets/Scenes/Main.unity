@@ -1278,6 +1278,7 @@ MonoBehaviour:
   goodPrefabs:
   - {fileID: 5795706835566153374, guid: 685093d64015d034fbac68466f021528, type: 3}
   - {fileID: 3480063845360468892, guid: 5902c139cbda58046880a7be62ff19d1, type: 3}
+  - {fileID: 1690859376357751339, guid: 1dff1bc405a19354c881d8648a3fcbb8, type: 3}
   badPrefabs:
   - {fileID: 1652615309459589620, guid: cd8bc9dd7ab2fb344826f3623ff75da3, type: 3}
   badChance: 0.3
