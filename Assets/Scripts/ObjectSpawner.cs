@@ -79,6 +79,8 @@ public class ObjectSpawner : MonoBehaviour
     // Tries to spawn an object at a random screen position on a plane
     void TrySpawn()
     {
+        Debug.Log("TrySpawn called");
+
         // Stop spawning if game is over
         if (GameManager.Instance != null && GameManager.Instance.GetTime() <= 0f)
             return;
