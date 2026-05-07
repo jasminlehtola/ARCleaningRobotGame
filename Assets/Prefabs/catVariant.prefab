@@ -232,6 +232,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2f7788675262ef24bb1df0492af1bf03, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CatMovement
-  moveSpeed: 0.2
-  moveRadius: 1
-  waitTime: 2
+  moveSpeed: 0.1
+  moveRadius: 3
+  waitTime: 4
