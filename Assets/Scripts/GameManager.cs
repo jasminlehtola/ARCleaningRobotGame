@@ -13,6 +13,7 @@ public class GameManager : MonoBehaviour
     public GameObject startButton;
 
     public GameObject gameOverPanel;
+    public GameObject instructions;
     public TMPro.TextMeshProUGUI finalScoreText;
 
     void Awake()
@@ -52,6 +53,7 @@ public class GameManager : MonoBehaviour
 
         if (startButton != null)
             startButton.SetActive(false);
+            instructions.SetActive(false);
     }
 
     // Adds score to the total score, but only if the game has started or ended
