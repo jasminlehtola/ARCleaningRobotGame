@@ -7,9 +7,11 @@ public class ObjectSpawner : MonoBehaviour
 {
     public GameObject[] goodPrefabs;
     public GameObject[] badPrefabs;
+    public GameObject catPrefab;
 
     [Range(0f, 1f)]
     public float badChance = 0.3f;
+    private bool catSpawned = false;
 
     public int maxObjects = 10;
     public float spawnInterval = 1f;
@@ -23,9 +25,9 @@ public class ObjectSpawner : MonoBehaviour
 
     private float timer = 0f;
 
-
     private List<GameObject> spawnedObjects = new List<GameObject>();
     static List<ARRaycastHit> hits = new List<ARRaycastHit>();
+
 
     // Initializes the ARRaycastManager and gets a reference to the AR camera
     void Start()
@@ -73,7 +75,11 @@ public class ObjectSpawner : MonoBehaviour
             initialSpawnDone = true;
         }
 
-
+        if (!catSpawned)
+        {
+            SpawnCat();
+            catSpawned = true;
+        }
     }
 
     // Tries to spawn an object at a random screen position on a plane
@@ -84,10 +90,6 @@ public class ObjectSpawner : MonoBehaviour
         // Stop spawning if game is over
         if (GameManager.Instance != null && GameManager.Instance.GetTime() <= 0f)
             return;
-
-        // Don't spawn until planes exist
-        //if (planeManager.trackables.count == 0)
-        //return;
 
 
         for (int i = 0; i < 5; i++)
@@ -131,6 +133,28 @@ public class ObjectSpawner : MonoBehaviour
                 Debug.Log("Spawned at distance: " + Vector3.Distance(pose.position, cameraPos));
                 return;
             }
+        }
+    }
+
+    // Spawns the cat 
+    void SpawnCat()
+    {
+        Debug.Log("SpawnCat called");
+
+        Vector2 randomScreenPos = new Vector2(
+            Screen.width * 0.5f,
+            Screen.height * 0.5f
+        );
+
+        if (raycastManager.Raycast(randomScreenPos, hits, TrackableType.PlaneWithinPolygon))
+        {
+            Pose pose = hits[0].pose;
+
+            Instantiate(
+                catPrefab,
+                pose.position + Vector3.up * 0.05f,
+                Quaternion.identity
+            );
         }
     }
 
