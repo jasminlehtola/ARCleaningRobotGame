@@ -70,15 +70,14 @@ public class ObjectSpawner : MonoBehaviour
             attempts++;
         }
 
-        if (spawnedObjects.Count >= target)
-        {
-            initialSpawnDone = true;
-        }
-
         if (!catSpawned)
         {
             SpawnCat();
-            catSpawned = true;
+        }
+
+        if (spawnedObjects.Count >= target)
+        {
+            initialSpawnDone = true;
         }
     }
 
@@ -139,7 +138,7 @@ public class ObjectSpawner : MonoBehaviour
     // Spawns the cat 
     void SpawnCat()
     {
-        Debug.Log("SpawnCat called");
+        Debug.Log("SPAWNING CAT");
 
         Vector2 randomScreenPos = new Vector2(
             Screen.width * 0.5f,
@@ -155,7 +154,11 @@ public class ObjectSpawner : MonoBehaviour
                 pose.position + Vector3.up * 0.05f,
                 Quaternion.identity
             );
+
+            catSpawned = true;
+            Debug.Log("CAT SPAWNED");
         }
+        
     }
 
     // Chooses a prefab to spawn based on the badChance probability
