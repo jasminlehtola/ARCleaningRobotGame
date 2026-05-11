@@ -404,7 +404,7 @@ GameObject:
   - component: {fileID: 542113951}
   - component: {fileID: 542113950}
   - component: {fileID: 542113953}
-  - component: {fileID: 542113952}
+  - component: {fileID: 542113954}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -431,6 +431,7 @@ MonoBehaviour:
   gameOverPanel: {fileID: 678222203}
   instructions: {fileID: 845536799}
   finalScoreText: {fileID: 1381779011}
+  vacuumSource: {fileID: 542113954}
 --- !u!4 &542113951
 Transform:
   m_ObjectHideFlags: 0
@@ -446,22 +447,22 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!82 &542113952
+--- !u!82 &542113953
 AudioSource:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 542113949}
-  m_Enabled: 0
+  m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
-  m_Resource: {fileID: 0}
+  m_Resource: {fileID: 8300000, guid: bfd47cd011c02c542ba8ea6536476b18, type: 3}
   m_PlayOnAwake: 1
-  m_Volume: 1
+  m_Volume: 0.206
   m_Pitch: 1
-  Loop: 0
+  Loop: 1
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0
@@ -543,20 +544,20 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!82 &542113953
+--- !u!82 &542113954
 AudioSource:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 542113949}
-  m_Enabled: 0
+  m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
-  m_Resource: {fileID: 8300000, guid: bfd47cd011c02c542ba8ea6536476b18, type: 3}
+  m_Resource: {fileID: 8300000, guid: 4ccaeb8b8cae05941afecdbddfc20cc1, type: 3}
   m_PlayOnAwake: 0
-  m_Volume: 0.323
+  m_Volume: 0.373
   m_Pitch: 1
   Loop: 1
   Mute: 0

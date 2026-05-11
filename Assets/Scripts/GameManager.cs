@@ -16,6 +16,8 @@ public class GameManager : MonoBehaviour
     public GameObject instructions;
     public TMPro.TextMeshProUGUI finalScoreText;
 
+    public AudioSource vacuumSource;
+
     void Awake()
     {
         Instance = this;
@@ -48,6 +50,7 @@ public class GameManager : MonoBehaviour
     {
         gameStarted = true;
         timeRemaining = gameDuration;
+        vacuumSource.Play();
 
         Debug.Log("Game Started!");
 
@@ -69,6 +72,7 @@ public class GameManager : MonoBehaviour
     void EndGame()
     {
         isGameOver = true;
+        vacuumSource.Stop();
 
         if (gameOverPanel != null)
             gameOverPanel.SetActive(true);
