@@ -7,20 +7,21 @@ public class Collectable : MonoBehaviour
 
     public float collectDistance = 0.8f;
     public float suctionSpeed = 2f;
+    public bool playSoundOnCollect = false;
+    private bool soundPlayed = false;
 
     private Transform playerCamera;
     private bool isBeingCollected = false;
+    private bool collected = false;
 
     private ObjectSpawner spawner;
-
-    private float spawnTime;
-    public float collectDelay = 1f;
+    private AudioSource audioSource;
 
     void Start()
     {
+        audioSource = GetComponent<AudioSource>();
         playerCamera = Camera.main.transform;
         spawner = FindFirstObjectByType<ObjectSpawner>();
-        spawnTime = Time.time;
     }
 
     // Checks the distance to the player camera and starts collecting if within range
@@ -31,6 +32,12 @@ public class Collectable : MonoBehaviour
         if (!isBeingCollected && distance < collectDistance)
         {
             isBeingCollected = true;
+
+            if (playSoundOnCollect && audioSource != null && !soundPlayed)
+            {
+                audioSource.Play();
+                soundPlayed = true;
+            }
         }
 
         if (isBeingCollected)
@@ -59,17 +66,23 @@ public class Collectable : MonoBehaviour
     // Collection of the object, updating the score and destroying the object
     public void Collect()
     {
+        if (collected)
+        {
+            return;
+        }
+        collected = true;
+
+        GetComponent<Collider>().enabled = false;
+
         GameManager.Instance.AddScore(scoreValue);
-        Debug.Log("Collected: " + gameObject.name + " | value: " + scoreValue);
+
+       
 
         if (spawner != null)
         {
             spawner.RemoveObject(gameObject);
         }
 
-        float distance = Vector3.Distance(transform.position, playerCamera.position);
-        Debug.Log("Collected at distance: " + distance);
-
-        Destroy(gameObject);
+        Destroy(gameObject, 1f);
     }
 }
