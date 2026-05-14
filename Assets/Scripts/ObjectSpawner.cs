@@ -11,8 +11,6 @@ public class ObjectSpawner : MonoBehaviour
 
     [Range(0f, 1f)]
     public float badChance = 0.3f;
-    private bool catSpawned = false;
-
     public int maxObjects = 10;
     public float spawnInterval = 1f;
     public float minSpawnDistance = 2f;
@@ -22,7 +20,7 @@ public class ObjectSpawner : MonoBehaviour
     private ARPlaneManager planeManager;
 
     private bool initialSpawnDone = false;
-
+    private bool catSpawned = false;
     private float timer = 0f;
 
     private List<GameObject> spawnedObjects = new List<GameObject>();

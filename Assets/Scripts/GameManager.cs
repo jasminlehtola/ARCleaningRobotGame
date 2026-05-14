@@ -4,14 +4,13 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
     public int score = 0;
-
     public float gameDuration = 60f;
+
     private float timeRemaining;
     public bool gameStarted = false;
     private bool isGameOver = false;
 
     public GameObject startButton;
-
     public GameObject gameOverPanel;
     public GameObject instructions;
     public TMPro.TextMeshProUGUI finalScoreText;
@@ -81,6 +80,7 @@ public class GameManager : MonoBehaviour
             finalScoreText.text = "Score: " + score;
     }
 
+    // Restarts the game by reloading the current scene
     public void RestartGame()
     {
         UnityEngine.SceneManagement.SceneManager.LoadScene(

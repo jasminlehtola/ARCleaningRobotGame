@@ -6,14 +6,15 @@ public class CatBehavior : MonoBehaviour
 
     public float moveSpeed = 0.1f;
     public float moveRadius = 3f;
-
     public float waitTime = 4f;
+
     private float waitTimer = 0f;
     private bool waiting = false;
 
     private Vector3 targetPosition;
     private Vector3 startPosition;
 
+    
     void Start()
     {
         animator = GetComponent<Animator>();
@@ -22,6 +23,7 @@ public class CatBehavior : MonoBehaviour
         PickNewTarget();
     }
 
+    // Handles the cat's movement and waiting after moving
     void Update()
     {
         if (waiting)
@@ -71,6 +73,7 @@ public class CatBehavior : MonoBehaviour
         }
     }
 
+    // Picks a new random target position within a circle around the start position
     void PickNewTarget()
     {
         Vector2 randomCircle = Random.insideUnitCircle * moveRadius;

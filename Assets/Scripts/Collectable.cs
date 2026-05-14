@@ -4,18 +4,18 @@ using UnityEngine;
 public class Collectable : MonoBehaviour
 {
     public int scoreValue = 1;
-
     public float collectDistance = 0.8f;
     public float suctionSpeed = 2f;
-    public bool playSoundOnCollect = false;
-    private bool soundPlayed = false;
 
-    private Transform playerCamera;
+    // public bool playCatSoundOnCollect = false;
+    private bool soundPlayed = false;
     private bool isBeingCollected = false;
     private bool collected = false;
 
+    private Transform playerCamera;
     private ObjectSpawner spawner;
     private AudioSource audioSource;
+    public AudioClip collectSound;
 
     void Start()
     {
@@ -33,9 +33,11 @@ public class Collectable : MonoBehaviour
         {
             isBeingCollected = true;
 
-            if (playSoundOnCollect && audioSource != null && !soundPlayed)
+            if (collectSound != null && audioSource != null && !soundPlayed)
             {
+                audioSource.clip = collectSound;
                 audioSource.Play();
+
                 soundPlayed = true;
             }
         }
