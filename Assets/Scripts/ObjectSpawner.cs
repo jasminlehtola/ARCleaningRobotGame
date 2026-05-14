@@ -11,8 +11,8 @@ public class ObjectSpawner : MonoBehaviour
 
     [Range(0f, 1f)]
     public float badChance = 0.3f;
-    public int maxObjects = 10;
-    public float spawnInterval = 1f;
+    public int maxObjects = 14;
+    public float spawnInterval = 0.5f;
     public float minSpawnDistance = 2f;
 
     private ARRaycastManager raycastManager;
@@ -172,10 +172,12 @@ public class ObjectSpawner : MonoBehaviour
         }
     }
 
-    // Removes an object from the spawnedObjects list when it is collected or destroyed
+    // Removes an object from the list of spawned objects and tries to spawn a new one
     public void RemoveObject(GameObject obj)
     {
         spawnedObjects.Remove(obj);
+
+        TrySpawn();
     }
 
     // Checks if the given position is too close to other spawned objects

@@ -1,11 +1,14 @@
 using UnityEngine;
+using UnityEngine.XR.ARFoundation;
 
 public class GameManager : MonoBehaviour
 {
+    public ARPlaneManager planeManager;
     public static GameManager Instance;
     public int score = 0;
     public float gameDuration = 60f;
 
+    private bool planesDetected = false;
     private float timeRemaining;
     public bool gameStarted = false;
     private bool isGameOver = false;
@@ -13,6 +16,8 @@ public class GameManager : MonoBehaviour
     public GameObject startButton;
     public GameObject gameOverPanel;
     public GameObject instructions;
+    public GameObject startScreen;
+    public GameObject loadingPanel;
     public TMPro.TextMeshProUGUI finalScoreText;
 
     public AudioSource vacuumSource;
@@ -32,6 +37,14 @@ public class GameManager : MonoBehaviour
     // Updates the game timer and checks for game over condition
     void Update()
     {
+        if (!planesDetected && planeManager.trackables.count > 0)
+        {
+            planesDetected = true;
+
+            loadingPanel.SetActive(false);
+            startScreen.SetActive(true);
+        }
+
         if (!gameStarted) return;
 
         if (isGameOver) return;
@@ -51,11 +64,9 @@ public class GameManager : MonoBehaviour
         timeRemaining = gameDuration;
         vacuumSource.Play();
 
+        startScreen.SetActive(false);
         Debug.Log("Game Started!");
 
-        if (startButton != null)
-            startButton.SetActive(false);
-            instructions.SetActive(false);
     }
 
     // Adds score to the total score, but only if the game has started or ended
